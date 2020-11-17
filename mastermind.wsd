@@ -4,8 +4,6 @@
 class Mastermind {
     -Game game
     +play() : void
-    -newGameInitialization() : void
-    -isResumed() : bool
 }
 
 
@@ -14,14 +12,7 @@ class Game {
     +{static} final int MAX_ATTEMPTS = 10
     -secretCombination : SecretCombination
     -attempts : Attempt[]
-    -attemptCount : int
     +play() : void
-    -newAttempt() : void
-    -printAttempts() : void
-    -printGameResult() : void
-    -isGameOver() : bool
-    -isMaxAttemptsExceeded() : bool
-    -lastAttemptIsSuccessful(): bool
 }
 
 class Attempt{
@@ -29,15 +20,12 @@ class Attempt{
     -result : Result
     +isSuccessful() : bool
     +show() : void
-    -askForCombination() : void
 }
 
 
 class Result{
     -blacks : int
     -whites : int
-    -hasAllBlacks() : bool
-    -toString() : string
 }
 
 enum Color{
@@ -49,7 +37,6 @@ enum Color{
     PINK('p')
 
     +{static} final string COLOR_LETTERS
-    -letter : char
     +getColorByLetter() : Color
     +isValidLetter() : bool
     +isSameColorAs(color : Color) : bool
@@ -59,20 +46,17 @@ enum Color{
 
 abstract class Combination{
     +{static} final int COMBINATION_LENGTH = 4
-    #colors : Color[]
-    +{static} isValid(proposed : string) : bool
-    +{static} printErrors(prpposed : string) : void
-    -isValidColor() : bool
-    -hasDuplicateColors(proposed : string) : bool
+    # colors : Color[]
+
 }
 
 class SecretCombination{
-    +evalueCombination(proposedCombination) : Result
-    -{static} generateRandomString() : string
-    -{static} randomIndex(arrayLength : int) : int
+    +evalueCombination(proposed) : Result
 }
 
 class ProposedCombination{
+    +isValid() : bool
+    +getErrors() : string
     +toString() : string
 }
 
@@ -101,5 +85,6 @@ Mastermind .> Console
 Game .> Console
 Attempt .> Console
 Combination .> Console
+'ProposedCombination .up.> Console
 
 @enduml
