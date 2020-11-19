@@ -1,31 +1,34 @@
 @startuml Mastermind
 
+note as N1
+  <b>instanceOf(team)</b>
+  - Alberto Morales a.k.a kodenix
+  - Antonio Cruz Vela
+  - José Carlos Fernández Bermejo
+  - Juan Antonio Pavón Carmona
+  - Carlos Barea
+  - Carlos Sánchez
+  - Maitere Pagola
+  - Rubén Badenas
+end note
+
 
 class Mastermind {
-    -Game game
-    +play() : void
-}
-
-
-
-class Game {
-    +{static} final int MAX_ATTEMPTS = 10
-    -secretCombination : SecretCombination
-    -attempts : Attempt[]
+    +Mastermind()
     +play() : void
 }
 
 class Attempt{
-    -proposedCombination : ProposedCombination
-    -result : Result
-    +isSuccessful() : bool
-    +show() : void
+    +Attempt(SecretCombination)
+    +isWinner() : bool
+    +display() : void
 }
 
 
 class Result{
-    -blacks : int
-    -whites : int
+    +Result(whites: int, blacks: int)
+    +whites() : int
+    +blacks() : int
 }
 
 enum Color{
@@ -35,56 +38,47 @@ enum Color{
     YELLOW('y')
     ORANGE('o')
     PINK('p')
-
-    +{static} final string COLOR_LETTERS
-    +getColorByLetter() : Color
-    +isValidLetter() : bool
+    +{static} getAvailableColors() : string
+    +{static} getColorByChar(char) : Color
     +isSameColorAs(color : Color) : bool
     +toString() : string
-
 }
 
 abstract class Combination{
-    +{static} final int COMBINATION_LENGTH = 4
-    # colors : Color[]
-
-}
-
-class SecretCombination{
-    +evalueCombination(proposed) : Result
-}
-
-class ProposedCombination{
-    +isValid() : bool
-    +getErrors() : string
+    +{static} isValid(string) : bool
+    +{static} getErrors(string) : string
     +toString() : string
 }
 
+class SecretCombination{
+    +SecretCombination()
+    +evalueCombination(proposed) : Result
+    +toString() : string
+}
+
+class ProposedCombination{
+    +ProposedCombination(proposed: string)
+}
+
 class Console{
-    +out(promptMessage : string) : void
-    +askForString(promptMessage : string) : string
+    +write(promptMessage : string) : void
+    +read(promptMessage : string) : string
 }
 
 
-Mastermind *--> Game
 
-Game *--> SecretCombination
-Game o--> "0..10" Attempt
+Mastermind *--> SecretCombination
+Mastermind *--> "0..10" Attempt
 
-Combination <|-- SecretCombination
-Combination <|-- ProposedCombination
-
+Combination ^-- SecretCombination
+Combination ^-- ProposedCombination
 Combination *--> "4" Color
 
 Attempt *--> ProposedCombination
 Attempt *--> Result
-
 Attempt ..> SecretCombination
 
-Mastermind .> Console
-Game .> Console
-Attempt .> Console
-Combination .> Console
-'ProposedCombination .up.> Console
+Mastermind ..> Console
+Attempt ..> Console
 
 @enduml
